@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 
-function AppButton({ label }) {
+function AppButton({ label, onPress }) {
 
     const [fontsLoaded] = useFonts({
         Nunito: require("../assets/fonts/Nunito-SemiBold.ttf"),
@@ -15,7 +15,7 @@ function AppButton({ label }) {
       }
 
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={onPress}>
             <View style={styles.content}>
             <MaterialCommunityIcons name='bell-outline' size={30} color="white" />
             <Text style={{ fontFamily: "Nunito", fontSize: 18, color: "white" }}>{label}</Text>

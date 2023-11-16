@@ -57,17 +57,16 @@ function NotificationScreen(props) {
 const styles = StyleSheet.create({
     header: {
       flexDirection: "row",
-      marginTop: 20
     },
     container: {
       paddingHorizontal: 15
     },
     content: {
-      marginVertical: 30
+        marginTop: 10,
     },
     switch: {
       flexDirection: "row",
-      marginVertical: 20
+      marginVertical: 30
     },
     text: {
         marginVertical: 10,

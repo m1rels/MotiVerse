@@ -8,7 +8,7 @@ import { Feather } from "@expo/vector-icons";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 
-function HomeScreen(props) {
+function HomeScreen({ navigation }) {
   const [fontsLoaded] = useFonts({
     NunitoSemiBold: require("../assets/fonts/Nunito-SemiBold.ttf"),
     NunitoBold: require("../assets/fonts/Nunito-Bold.ttf"),
@@ -21,16 +21,18 @@ function HomeScreen(props) {
 
   return (
     <Screen>
-        <View style={{ alignItems: "flex-end", paddingHorizontal: 10 }}>
-        <Feather name="moon" size={25} style={{ borderWidth: 2, borderRadius: 10, padding: 5 }} />
-        </View>
+      <View style={{ alignItems: "flex-end", paddingHorizontal: 10 }}>
+        <Feather
+          name="moon"
+          size={25}
+          style={{ borderWidth: 2, borderRadius: 10, padding: 5 }}
+        />
+      </View>
       <View style={styles.container}>
         <AppText style={[{ marginBottom: 20 }, styles.text]}>
           Quote of the day:
         </AppText>
-        <Image
-          style={styles.image}
-        />
+        <Image style={styles.image} />
         <Text style={[{ fontSize: 18, fontFamily: "NunitoBold" }, styles.text]}>
           David Gobbins
         </Text>
@@ -50,9 +52,12 @@ function HomeScreen(props) {
           </Text>
         </View>
         <View style={styles.button}>
-        <AppButton label="Notifications" />
+          <AppButton
+            label="Notifications"
+            onPress={() => navigation.navigate("Notifications")}
+          />
         </View>
-        </View>
+      </View>
     </Screen>
   );
 }
@@ -61,8 +66,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 50
-  },  
+    marginTop: 50,
+  },
   text: {
     textAlign: "center",
   },
@@ -71,10 +76,10 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
     borderRadius: 100,
-    marginVertical: 20
+    marginVertical: 20,
   },
   button: {
-    marginVertical: 20
+    marginVertical: 20,
   },
 });
 
