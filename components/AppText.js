@@ -3,11 +3,15 @@ import { View, Text, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
+import { useTheme } from "@react-navigation/native";
+
 SplashScreen.preventAutoHideAsync();
 
 function AppText({ children, style }) {
+  const { colors } = useTheme();
+
   const [fontsLoaded] = useFonts({
-    "Nunito": require("../assets/fonts/Nunito-SemiBold.ttf"),
+    Nunito: require("../assets/fonts/Nunito-SemiBold.ttf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -20,11 +24,15 @@ function AppText({ children, style }) {
     return null;
   }
 
-  return <View onLayout={onLayoutRootView} style={style}><Text style={{fontFamily: "Nunito", fontSize: 16}}>{children}</Text></View>;
+  return (
+    <View onLayout={onLayoutRootView} style={style}>
+      <Text style={{ fontFamily: "Nunito", fontSize: 16, color: colors.text }}>
+        {children}
+      </Text>
+    </View>
+  );
 }
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 export default AppText;

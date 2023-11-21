@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState, useCallback, useContext } from "react";
 import Screen from "../components/Screen";
 import { View, Text, Image, StyleSheet } from "react-native";
+import { EventRegister } from "react-native-event-listeners";
 
 import { useFonts } from "expo-font";
 import { Feather } from "@expo/vector-icons";
+import { useTheme } from "@react-navigation/native";
 
+import themeContext from "../theme/themeContext";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 
 function HomeScreen({ navigation }) {
+  const { setTheme, theme } = useContext(themeContext);
+  const { colors } = useTheme();
+  const [iconType, setIconType] = useState("moon");
+
   const [fontsLoaded] = useFonts({
     NunitoSemiBold: require("../assets/fonts/Nunito-SemiBold.ttf"),
     NunitoBold: require("../assets/fonts/Nunito-Bold.ttf"),
@@ -23,9 +30,19 @@ function HomeScreen({ navigation }) {
     <Screen>
       <View style={{ alignItems: "flex-end", paddingHorizontal: 10 }}>
         <Feather
-          name="moon"
+          name={iconType}
           size={25}
-          style={{ borderWidth: 2, borderRadius: 10, padding: 5 }}
+          style={{
+            borderWidth: 2,
+            borderRadius: 10,
+            borderColor: colors.border,
+            padding: 5,
+          }}
+          onPress={() => {
+            setTheme(theme === "Light" ? "Dark" : "Light");
+            setIconType(iconType === "moon" ? "sun" : "moon");
+          }}
+          color={colors.text}
         />
       </View>
       <View style={styles.container}>
@@ -33,18 +50,30 @@ function HomeScreen({ navigation }) {
           Quote of the day:
         </AppText>
         <Image style={styles.image} />
-        <Text style={[{ fontSize: 18, fontFamily: "NunitoBold" }, styles.text]}>
+        <Text
+          style={[
+            { fontSize: 18, fontFamily: "NunitoBold", color: colors.text },
+            styles.text,
+          ]}
+        >
           David Gobbins
         </Text>
         <View style={{ marginVertical: 40 }}>
           <Text
-            style={[{ fontFamily: "BebasNeue", fontSize: 32 }, styles.text]}
+            style={[
+              { fontFamily: "BebasNeue", fontSize: 32, color: colors.text },
+              styles.text,
+            ]}
           >
             "They don't know me, son!"
           </Text>
           <Text
             style={[
-              { fontFamily: "NunitoSemiBold", fontSize: 14 },
+              {
+                fontFamily: "NunitoSemiBold",
+                fontSize: 14,
+                color: colors.text,
+              },
               styles.text,
             ]}
           >
