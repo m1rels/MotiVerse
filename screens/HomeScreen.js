@@ -11,11 +11,14 @@ import themeContext from "../theme/themeContext";
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import quotesApi from "../api/quotes";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 function HomeScreen({ navigation }) {
   const { setTheme, theme } = useContext(themeContext);
   const { colors } = useTheme();
   const [iconType, setIconType] = useState("moon");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [quotes, setQuotes] = useState([]);
 
 useEffect(() => {
@@ -23,8 +26,13 @@ useEffect(() => {
 }, [])
 
   const loadQuotes = async () => {
+    setLoading(true);
     const response = await quotesApi.getQuotes();
+    setLoading(false);
+
+    if (!response.ok) setError(true);
     
+    setError(false);
     setQuotes(response.data);
   }
 
@@ -37,7 +45,7 @@ useEffect(() => {
   if (!fontsLoaded) {
     return null;
   }
- 
+
   return ( 
     <Screen>
       <View style={{ alignItems: "flex-end", paddingHorizontal: 10 }}>
@@ -57,48 +65,53 @@ useEffect(() => {
           color={colors.text}
         />
       </View>
-      <View style={styles.container}>
-        <AppText style={[{ marginBottom: 20 }, styles.text]}>
+      <View style={styles.container}> 
+        <AppText style={[{ marginBottom: 10 }, styles.text]}>
           Quote of the day:
-        </AppText>
-        <View style={styles.container}>
-        <Text
-          style={[
-            { fontSize: 18, fontFamily: "NunitoBold", color: colors.text },
-            styles.text,
-          ]}
-        >
-          {quotes[0].a}
-        </Text>
-        <View style={{ marginVertical: 40, paddingHorizontal: 20 }}>
+        </AppText> 
+        {quotes.length > 0 ? (
+          <View style={styles.container}>
           <Text
             style={[
-              { fontFamily: "BebasNeue", fontSize: 32, color: colors.text },
+              { fontSize: 18, fontFamily: "NunitoBold", color: colors.text },
               styles.text,
             ]}
           >
-           "{quotes[0].q}""
-          </Text>   
-          <Text
-            style={[
-              {
-                fontFamily: "NunitoSemiBold",
-                fontSize: 14,
-                color: colors.text,
-              },
-              styles.text,
-            ]}
-          >
-            inspired by zenquotes.com
+            {quotes[0].a}
           </Text>
-        </View>
-        <View style={styles.button}>
-          <AppButton 
-            label="Notifications"
-            onPress={() => navigation.navigate("Notifications")}
-          />
-        </View>
-        </View>
+          <View style={{ marginVertical: 40, paddingHorizontal: 20 }}>
+            <Text
+              style={[
+                { fontFamily: "BebasNeue", fontSize: 32, color: colors.text },
+                styles.text,
+              ]}
+            >
+             "{quotes[0].q}""
+            </Text>   
+            <Text
+              style={[
+                {
+                  fontFamily: "NunitoSemiBold",
+                  fontSize: 14,
+                  color: colors.text,
+                },
+                styles.text,
+              ]}
+            >
+              inspired by zenquotes.com
+            </Text>
+          </View>
+          <View style={styles.button}>
+            <AppButton 
+              label="Notifications"
+              onPress={() => navigation.navigate("Notifications")}
+            />
+          </View>
+          </View>
+        ) : (
+        <View style={styles.loader}>
+        <ActivityIndicator visible={loading} />
+        </View>)}
       </View>
     </Screen>
   );
@@ -108,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 50,
+    marginTop: 80
   },
   text: {
     textAlign: "center",
@@ -122,6 +135,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 20,
+    alignItems: "center"
+  },
+  loader: {
+    marginTop: 120
   },
 });
 
