@@ -8,6 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 import NotificationScreen from "./screens/NotificationScreen";
 import themeContext from "./theme/themeContext";
 import { DarkMode, LightMode } from "./navigation/navigationTheme";
+import OfflineNotice from "./components/OfflineNotice";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
@@ -35,6 +36,7 @@ export default function App() {
   return (
     <themeContext.Provider value={themeData}>
       <NavigationContainer theme={theme === "Light" ? DarkMode : LightMode}>
+        <OfflineNotice />
         <StackNavigator />
       </NavigationContainer>
     </themeContext.Provider>
