@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import Screen from "../components/Screen";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useFonts } from "expo-font";
 import { Feather } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 import themeContext from "../theme/themeContext";
 import AppText from "../components/AppText";
@@ -18,6 +19,7 @@ function HomeScreen({ navigation }) {
   const { colors } = useTheme();
   const [iconType, setIconType] = useState("moon");
   const [error, setError] = useState(false);
+  const netInfo = useNetInfo();
   const [loading, setLoading] = useState(false);
   const [quotes, setQuotes] = useState([]);
 
@@ -25,26 +27,41 @@ function HomeScreen({ navigation }) {
     loadQuotes();
   }, []);
 
+  const showAlert = () => {
+    Alert.alert(
+      "No Internet Connection",
+      "Quote of the day could not be loaded. Make sure that you are connected to the internet.",
+      [{ text: "OK" }]
+    );
+  };
+
   const loadQuotes = async () => {
     setLoading(true);
     const lastAPIFetchDate = await AsyncStorage.getItem("lastAPIFetchDate");
     const currentDate = new Date().toISOString().split("T")[0];
 
-    if (!lastAPIFetchDate || lastAPIFetchDate < currentDate) {
+    if (
+      netInfo.type === "wifi" &&
+      netInfo.isInternetReachable === true &&
+      (!lastAPIFetchDate || lastAPIFetchDate < currentDate)
+    ) {
       // Mach den API-Aufruf, da entweder noch kein API-Aufruf gemacht wurde oder der letzte vor dem aktuellen Tag war
       const data = await getQuotes();
       if (data) {
         setQuotes(data);
+        setLoading(false);
+        await AsyncStorage.setItem("lastAPIFetchDate", currentDate);
         // Hier kannst du weiter mit den Daten arbeiten
       }
-      setLoading(false);
-      await AsyncStorage.setItem("lastAPIFetchDate", currentDate);
     } else {
       const storedQuotes = await AsyncStorage.getItem("quotes");
       if (storedQuotes) {
         setQuotes(JSON.parse(storedQuotes));
       }
       setLoading(false);
+      if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false) {
+        showAlert();
+      }
     }
     return;
   };
