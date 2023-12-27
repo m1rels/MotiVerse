@@ -25,7 +25,6 @@ function HomeScreen({ navigation }) {
   const [quotes, setQuotes] = useState([]);
 
   useEffect(() => {
-    AsyncStorage.removeItem("hasVisited");
     checkFirstTime();
     loadQuotes();
   }, []);
@@ -78,7 +77,8 @@ function HomeScreen({ navigation }) {
         setQuotes(JSON.parse(storedQuotes));
       }
       setLoading(false);
-      if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false) {
+      if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false &&
+      (!lastAPIFetchDate || lastAPIFetchDate < currentDate)) {
         showAlert();
       }
     }
