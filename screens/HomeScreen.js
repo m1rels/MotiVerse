@@ -163,7 +163,7 @@ function HomeScreen({ navigation }) {
     <Modal visible={showModal} animationType="slide" transparent={true}>
       <Screen>
        {/* Your modal content goes here */}
-       <View style={{flex: 1, alignItems: "center", backgroundColor: colors.background}}>
+       <View style={{flex: 1, alignItems: "center", backgroundColor: colors.background, paddingHorizontal: 10}}>
          <AppText style={{ fontFamily: "NunitoBold", color: colors.text, fontSize: 21, marginVertical: 20, textAlign: "center" }}>
            Welcome to MotiVerse!
          </AppText>
