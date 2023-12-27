@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Screen from "../components/Screen";
-import { View, Text, StyleSheet, Alert, Modal } from "react-native";
+import { View, Text, StyleSheet, Alert, Modal, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useFonts } from "expo-font";
@@ -77,8 +77,7 @@ function HomeScreen({ navigation }) {
         setQuotes(JSON.parse(storedQuotes));
       }
       setLoading(false);
-      if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false &&
-      (!lastAPIFetchDate || lastAPIFetchDate < currentDate)) {
+      if (netInfo.type !== "unknown" && netInfo.isInternetReachable === false) {
         showAlert();
       }
     }
@@ -163,13 +162,16 @@ function HomeScreen({ navigation }) {
     <Modal visible={showModal} animationType="slide" transparent={true}>
       <Screen>
        {/* Your modal content goes here */}
-       <View style={{flex: 1, backgroundColor: colors.background}}>
-         <AppText style={{ fontFamily: "NunitoBold", color: colors.text, fontSize: 21, textAlign: "center", marginVertical: 20 }}>
+       <View style={{flex: 1, alignItems: "center", backgroundColor: colors.background}}>
+         <AppText style={{ fontFamily: "NunitoBold", color: colors.text, fontSize: 21, marginVertical: 20, textAlign: "center" }}>
            Welcome to MotiVerse!
          </AppText>
-         <AppText style={styles.intro}>
+         <View style={styles.logo}>
+         <Image style={styles.image} source={require("../assets/logo.png")} />
+         <AppText style={[styles.text, styles.slogan]}>
            Elevate your mindset. Elevate your life.
          </AppText>
+         </View>
          <View style={{marginVertical: 20}}>
          <AppText style={styles.intro}>
            Get ready to kickstart each day with a motivational quote to
@@ -187,7 +189,7 @@ function HomeScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   container: {
     justifyContent: "center",
     alignItems: "center",
@@ -199,16 +201,21 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
   },
+  slogan: {
+    position: "relative",
+    top: -20
+  },
   intro: {
     marginVertical: 10,
     textAlign: "center"
   },
-  image: {
-    backgroundColor: "grey",
-    height: 100,
-    width: 100,
-    borderRadius: 100,
+  logo: {
+    alignItems: "center",
     marginVertical: 20,
+  },
+  image: {
+    height: 175,
+    width: 175,
   },
   button: {
     marginVertical: 50,
