@@ -5,8 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useFonts } from "expo-font";
 import { Feather } from "@expo/vector-icons";
-import { useTheme } from "@react-navigation/native";
+import { Link, useTheme } from "@react-navigation/native";
 import { useNetInfo } from "@react-native-community/netinfo";
+import { A } from '@expo/html-elements';
 
 import themeContext from "../theme/themeContext";
 import AppText from "../components/AppText";
@@ -148,7 +149,7 @@ function HomeScreen({ navigation }) {
                   styles.text,
                 ]}
               >
-                inspired by ZenQuotes
+                inspired by <A href="https://zenquotes.io" style={styles.link}>ZenQuotes</A>
               </Text>
             </View>
           </View>
@@ -224,6 +225,9 @@ const styles = StyleSheet.create({
   loader: {
     marginTop: 150,
   },
+  link: {
+    color: "#1EF0FF"
+  }
 });
 
 export default HomeScreen;
