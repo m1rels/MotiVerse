@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Screen from "../components/Screen";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useFonts } from "expo-font";
@@ -18,14 +18,33 @@ function HomeScreen({ navigation }) {
   const { setTheme, theme } = useContext(themeContext);
   const { colors } = useTheme();
   const [iconType, setIconType] = useState("moon");
+  const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(false);
   const netInfo = useNetInfo();
   const [loading, setLoading] = useState(false);
   const [quotes, setQuotes] = useState([]);
 
   useEffect(() => {
+    AsyncStorage.removeItem("hasVisited");
+    checkFirstTime();
     loadQuotes();
   }, []);
+
+  const checkFirstTime = async () => {
+    try {
+      const hasVisitedBefore = await AsyncStorage.getItem("hasVisited");
+      if (!hasVisitedBefore) {
+        setShowModal(true);
+        await AsyncStorage.setItem("hasVisited", "true");
+      }
+    } catch (error) {
+      console.error("Error reading/writing to AsyncStorage:", error);
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   const showAlert = () => {
     Alert.alert(
@@ -77,6 +96,7 @@ function HomeScreen({ navigation }) {
   }
 
   return (
+    <>
     <Screen>
       <View style={{ alignItems: "flex-end", paddingHorizontal: 10 }}>
         <Feather
@@ -116,7 +136,7 @@ function HomeScreen({ navigation }) {
                   styles.text,
                 ]}
               >
-                "{quotes[0].q}""
+                "{quotes[0].q}"
               </Text>
               <Text
                 style={[
@@ -124,18 +144,13 @@ function HomeScreen({ navigation }) {
                     fontFamily: "NunitoSemiBold",
                     fontSize: 14,
                     color: colors.text,
+                    marginVertical: 10
                   },
                   styles.text,
                 ]}
               >
-                inspired by zenquotes.com
+                inspired by ZenQuotes
               </Text>
-            </View>
-            <View style={styles.button}>
-              <AppButton
-                label="Notifications"
-                onPress={() => navigation.navigate("Notifications")}
-              />
             </View>
           </View>
         ) : (
@@ -145,6 +160,30 @@ function HomeScreen({ navigation }) {
         )}
       </View>
     </Screen>
+    <Modal visible={showModal} animationType="slide" transparent={true}>
+      <Screen>
+       {/* Your modal content goes here */}
+       <View style={{flex: 1, backgroundColor: colors.background}}>
+         <AppText style={{ fontFamily: "NunitoBold", color: colors.text, fontSize: 21, textAlign: "center", marginVertical: 20 }}>
+           Welcome to MotiVerse!
+         </AppText>
+         <AppText style={styles.intro}>
+           Elevate your mindset. Elevate your life.
+         </AppText>
+         <View style={{marginVertical: 20}}>
+         <AppText style={styles.intro}>
+           Get ready to kickstart each day with a motivational quote to
+           fuel your journey towards success. Join our community, share the
+           positivity, and let's make every day extraordinary together!
+         </AppText>
+         </View>
+         <View style={styles.button}>
+         <AppButton label="Let's Go!" onPress={closeModal} />
+         </View>
+       </View>
+       </Screen>
+   </Modal>
+  </>
   );
 }
 
@@ -160,6 +199,10 @@ const styles = StyleSheet.create({
   text: {
     textAlign: "center",
   },
+  intro: {
+    marginVertical: 10,
+    textAlign: "center"
+  },
   image: {
     backgroundColor: "grey",
     height: 100,
@@ -168,7 +211,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   button: {
-    marginVertical: 20,
+    marginVertical: 50,
     alignItems: "center",
   },
   loader: {
