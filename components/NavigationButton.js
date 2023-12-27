@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { useTheme } from "@react-navigation/native";
 
-function AppButton({onPress, label, icon}) {
+function AppButton({ label, onPress, icon }) {
   const { colors } = useTheme();
 
   const [fontsLoaded] = useFonts({
@@ -24,6 +24,7 @@ function AppButton({onPress, label, icon}) {
       ]}
       onPress={onPress}
     >
+      <View style={styles.content}>
         <MaterialCommunityIcons
           name={icon}
           size={30}
@@ -38,26 +39,33 @@ function AppButton({onPress, label, icon}) {
         >
           {label}
         </Text>
+      </View>
+      <View>
+        <MaterialCommunityIcons
+          name="chevron-right"
+          size={30}
+          color={colors.button_text}
+        />
+      </View>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 25,
-      flexDirection: "row",
-      width: 250,
-      justifyContent: "center",
-      columnGap: 10,
-    },
-    content: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 10,
-    },
-  });
-  
+  container: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    flexDirection: "row",
+    width: 250,
+    justifyContent: "space-between",
+    columnGap: 10,
+  },
+  content: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+});
 
 export default AppButton;

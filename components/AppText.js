@@ -25,8 +25,8 @@ function AppText({ children, style }) {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={style}>
-      <Text style={{ fontFamily: "Nunito", fontSize: 16, color: colors.text }}>
+    <View onLayout={onLayoutRootView} >
+      <Text style={[{ fontFamily: "Nunito", fontSize: 16, color: colors.text }, style]} >
         {children}
       </Text>
     </View>
