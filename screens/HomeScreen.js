@@ -54,6 +54,24 @@ function HomeScreen({ navigation }) {
     );
   };
 
+  const saveTheme = async (themeMode) => {
+    try {
+      await AsyncStorage.setItem("theme", themeMode);
+    } catch (error) {
+      console.error("Error saving theme to AsyncStorage:", error);
+    }
+  };
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => {
+      const newTheme = prevTheme === "light" ? "dark" : "light";
+      setIconType(iconType === "moon" ? "sun" : "moon");
+      saveTheme(newTheme);
+      return newTheme;
+    });
+  };
+
+
   const loadQuotes = async () => {
     setLoading(true);
     const lastAPIFetchDate = await AsyncStorage.getItem("lastAPIFetchDate");
@@ -109,8 +127,7 @@ function HomeScreen({ navigation }) {
             padding: 5,
           }}
           onPress={() => {
-            setTheme(theme === "Light" ? "Dark" : "Light");
-            setIconType(iconType === "moon" ? "sun" : "moon");
+            toggleTheme();
           }}
           color={colors.text}
         />
@@ -120,7 +137,7 @@ function HomeScreen({ navigation }) {
           Quote of the day:
         </AppText>
         {quotes.length > 0 ? (
-          <View style={styles.quote}>
+          <View style={styles.quote}> 
             <Text
               style={[
                 { fontSize: 18, fontFamily: "NunitoBold", color: colors.text },
@@ -128,8 +145,8 @@ function HomeScreen({ navigation }) {
               ]}
             >
               {quotes[0].a}
-            </Text>
-            <View style={{ marginVertical: 40, paddingHorizontal: 20 }}>
+            </Text> 
+            <View style={{ marginVertical: 40, paddingHorizontal: 20 }}> 
               <Text
                 style={[
                   { fontFamily: "BebasNeue", fontSize: 32, color: colors.text },

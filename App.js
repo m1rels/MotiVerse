@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -29,13 +31,29 @@ const StackNavigator = () => {
 };
 
 export default function App() {
-  const [theme, setTheme] = useState("Light");
+  const colorScheme = useColorScheme();
+  const [theme, setTheme] = useState(colorScheme);
+
+  useEffect(() => {
+    loadTheme();
+  }, []);
 
   const themeData = { theme, setTheme };
 
+  const loadTheme = async () => {
+    try {
+      const savedTheme = await AsyncStorage.getItem("theme");
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+    } catch (error) {
+      console.error("Error reading theme from AsyncStorage:", error);
+    }
+  };
+
   return (
     <themeContext.Provider value={themeData}>
-      <NavigationContainer theme={theme === "Light" ? DarkMode : LightMode}>
+      <NavigationContainer theme={theme === "light" ? LightMode : DarkMode}>
         <OfflineNotice />
         <StackNavigator />
       </NavigationContainer>
