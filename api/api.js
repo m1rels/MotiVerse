@@ -1,6 +1,7 @@
 // api.js
 import { create } from 'apisauce';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import logger from '../utility/logger';
 
 const api = create({
   baseURL: 'https://zenquotes.io/api/',
@@ -22,11 +23,11 @@ export const getQuotes = async () => {
       console.log('Daten erfolgreich im AsyncStorage gespeichert:', quotes);
       return quotes;
     } else {
-      console.error('Fehler beim Abrufen der Daten:', response.problem);
+      logger.log('Fehler beim Abrufen der Daten:', response.problem);
       return null;
     }
   } catch (error) {
-    console.error('Fehler:', error);
+    logger.log('Fehler:', error);
     return null;
   }
 };

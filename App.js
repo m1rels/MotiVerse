@@ -11,6 +11,7 @@ import NotificationScreen from "./screens/NotificationScreen";
 import themeContext from "./theme/themeContext";
 import { DarkMode, LightMode } from "./navigation/navigationTheme";
 import OfflineNotice from "./components/OfflineNotice";
+import logger from "./utility/logger";
 
 const Stack = createStackNavigator();
 const StackNavigator = () => {
@@ -30,12 +31,14 @@ const StackNavigator = () => {
   );
 };
 
+logger.start();
+
 export default function App() {
   const colorScheme = useColorScheme();
   const [theme, setTheme] = useState(colorScheme);
 
   useEffect(() => {
-    loadTheme();
+    loadTheme(); 
   }, []);
 
   const themeData = { theme, setTheme };
@@ -47,7 +50,7 @@ export default function App() {
         setTheme(savedTheme);
       }
     } catch (error) {
-      console.error("Error reading theme from AsyncStorage:", error);
+      logger.log("Error reading theme from AsyncStorage:", error);
     }
   };
 

@@ -14,6 +14,7 @@ import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import { getQuotes } from "../api/api";
 import ActivityIndicator from "../components/ActivityIndicator";
+import logger from "../utility/logger";
 
 function HomeScreen({ navigation }) {
   const { setTheme, theme } = useContext(themeContext);
@@ -38,7 +39,7 @@ function HomeScreen({ navigation }) {
         await AsyncStorage.setItem("hasVisited", "true");
       }
     } catch (error) {
-      console.error("Error reading/writing to AsyncStorage:", error);
+      logger.log("Error reading/writing to AsyncStorage:", error);
     }
   };
 
@@ -58,7 +59,7 @@ function HomeScreen({ navigation }) {
     try {
       await AsyncStorage.setItem("theme", themeMode);
     } catch (error) {
-      console.error("Error saving theme to AsyncStorage:", error);
+      logger.log("Error saving theme to AsyncStorage:", error);
     }
   };
 
@@ -103,13 +104,13 @@ function HomeScreen({ navigation }) {
     return;
   };
 
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     NunitoSemiBold: require("../assets/fonts/Nunito-SemiBold.ttf"),
     NunitoBold: require("../assets/fonts/Nunito-Bold.ttf"),
     BebasNeue: require("../assets/fonts/BebasNeue-Regular.ttf"),
   });
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !fontError) {
     return null;
   }
 

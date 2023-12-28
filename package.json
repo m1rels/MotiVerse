@@ -26,7 +26,12 @@
     "react-native-background-task": "^0.2.1",
     "react-native-event-listeners": "^1.0.7",
     "react-native-safe-area-context": "4.6.3",
-    "react-native-screens": "~3.22.0"
+    "react-native-screens": "~3.22.0",
+    "@bugsnag/expo": "^49.0.0",
+    "expo-application": "~5.3.0",
+    "expo-crypto": "~12.4.1",
+    "expo-device": "~5.4.0",
+    "expo-file-system": "~15.4.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
