@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -38,7 +38,7 @@ export default function App() {
   const [theme, setTheme] = useState(colorScheme);
 
   useEffect(() => {
-    loadTheme(); 
+    loadTheme();
   }, []);
 
   const themeData = { theme, setTheme };

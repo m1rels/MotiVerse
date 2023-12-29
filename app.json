@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MotivateApp",
-    "slug": "MotivateApp",
+    "name": "MotiVerse",
+    "slug": "MotiVerse",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.m1rels.motiverse"
     },
     "android": {
       "adaptiveIcon": {
